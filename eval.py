@@ -38,7 +38,6 @@ def evaluate_tf2(device, model_name):
         truth = np.array([np.argmax(t) for t in y])
 
         score += np.sum(output == truth)
-
         t_avg.append(t_predict * 1000)
     stop = time.time()
     print(f'total execution time: {np.round(stop - start, 3)}s - avg batch time: {np.round(np.mean(t_avg), 3)}ms  - score: {score / 2000 * 100}%')
