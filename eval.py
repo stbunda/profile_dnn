@@ -26,13 +26,13 @@ def evaluate_tf2(device, model_name):
 
     t_avg = []
     score = 0
-    test_batch = batch_generator(x_test, y_test, 64)
-
+    test_batch = batch_generator(x_test, y_test, 16)
+    start = time.time()
     for x, y in test_batch:
         x = np.expand_dims(x, axis=-1)
 
         since = time.time()
-        prediction = model.predict(x, verbose=0)
+        prediction = model.predict(x, verbose=1)
         t_predict = time.time() - since
         output = np.array([np.argmax(p) for p in prediction])
         truth = np.array([np.argmax(t) for t in y])
@@ -40,8 +40,9 @@ def evaluate_tf2(device, model_name):
         score += np.sum(output == truth)
 
         t_avg.append(t_predict * 1000)
-    print('avg_batch_time: ', np.mean(t_avg), 'score: ', score / 2000 * 100)
-    return np.mean(t_avg)
+    stop = time.time()
+    print(f'total execution time: {np.round(stop - start, 3)}s - avg batch time: {np.round(np.mean(t_avg), 3)}ms  - score: {score / 2000 * 100}%')
+    return np.round(np.mean(t_avg), 3)
 
 
 
@@ -50,7 +51,7 @@ def evaluate(device, model_type, model_name, repetitions=10):
     if model_type == 'tensorflow2':
         for i in range(repetitions):
             t += evaluate_tf2(device, model_name)
-    print('average total time: ', t/repetitions)
+    print(f'average total time:  {t/repetitions}s')
 
 
 
