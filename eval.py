@@ -153,6 +153,9 @@ def evaluate(device, model_type, model_name, repetitions=10):
     if model_type == 'tensorflow2':
         for i in range(repetitions):
             t += evaluate_tf2(device, model_name)
+    if model_type == 'pytorch':
+        for i in range(repetitions):
+            t += evaluate_pytorch(device, model_name)
     print(f'average total time:  {t / repetitions}s')
 
 
